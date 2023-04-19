@@ -5,9 +5,10 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 // vai identificar o OS e adaptar o caminho relativo do arquivo, pois em outros OS a barra pode ser invertida \ ao invés de /
 module.exports = {
+  mode: "development",
   // caminho relativo do ponto de entrada da nossa aplicação
   // arquivo que tem o ReactDOM.render
-  entry: path.resolve(__dirname, "transpiled", "index.js"),
+  entry: path.resolve(__dirname, "src", "index.js"),
   // caminho que deve salvar os arquivos de saída
   output: {
     path: path.resolve(__dirname, "build"),
@@ -23,4 +24,19 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
   ],
+  module: {
+    rules: [
+      {
+        // match com os arquivos .js
+        test: /\.js$/,
+        // excluindo a pasta node_modules, pois os pacotes do NPM já passaram por uma transpilação pelo babel
+        exclude: /node_modules/,
+        // nome do loader que iremos utilizar
+        use: "babel-loader",
+      },
+    ],
+  },
+  devServer: {
+    port: 3000,
+  },
 };
